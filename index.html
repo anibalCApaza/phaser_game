@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
 
-    <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.min.js"></script>
     <style>
       html,
       body {
         margin: 0;
         padding: 0;
+        background-color: #2c2546;
       }
     </style>
   </head>
@@ -37,6 +38,8 @@
           create: create,
           update: update,
         },
+        mode: Phaser.Scale.ScaleModes.FIT,
+        autoCenter: Phaser.Scale.Center.CENTER_BOTH,
       };
 
       var game = new Phaser.Game(config);
