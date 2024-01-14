@@ -13,9 +13,21 @@
         padding: 0;
         background-color: #2c2546;
       }
+
+      .texto {
+        color: antiquewhite;
+        position: absolute;
+        top: 600px;
+        width: 450px;
+        text-align: center;
+        font-family: monospace;
+      }
     </style>
   </head>
   <body>
+    <div class="texto">
+      <p>Pellizca el tactil para ver la pantalla completa :3</p>
+    </div>
     <script type="text/javascript">
       let far_clouds = [];
       let near_clouds = [];
@@ -38,8 +50,6 @@
           create: create,
           update: update,
         },
-        mode: Phaser.Scale.ScaleModes.FIT,
-        autoCenter: Phaser.Scale.Center.CENTER_BOTH,
       };
 
       var game = new Phaser.Game(config);
@@ -57,12 +67,6 @@
       }
 
       function create() {
-        this.input.on("pointerdown", function () {
-          if (!document.fullscreenElement) {
-            game.scale.startFullscreen();
-          }
-        });
-
         this.add.image(400, 300, "sky").setScale(2.5);
 
         let x = 0;
@@ -106,6 +110,8 @@
           trees.push(aux);
           x = x + 600;
         }
+
+        this.add.text(400, 100, "Texto de Phaser").setOrigin(0.5);
       }
 
       function update(time, delta) {
