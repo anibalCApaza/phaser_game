@@ -57,6 +57,12 @@
       }
 
       function create() {
+        this.input.on("pointerdown", function () {
+          if (!document.fullscreenElement) {
+            game.scale.startFullscreen();
+          }
+        });
+
         this.add.image(400, 300, "sky").setScale(2.5);
 
         let x = 0;
