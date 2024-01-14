@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="text/javascript">
+      let far_clouds = [];
+      let near_clouds = [];
+      let far_mountains = [];
+      let mountains = [];
+      let trees = [];
+
+      let velocity_far_clouds = 50;
+      let velocity_near_clouds = 150;
+      let velocity_far_mountains = 200;
+      let velocity_mountains = 250;
+      let velocity_trees = 300;
+      var config = {
+        type: Phaser.AUTO,
+        width: 800,
+        height: 600,
+        scene: {
+          preload: preload,
+          create: create,
+          update: update,
+        },
+      };
+
+      var game = new Phaser.Game(config);
+
+      function preload() {
+        this.load.image("sky", "resources/background/sky.png");
+        this.load.image("far-clouds", "resources/background/far-clouds.png");
+        this.load.image("near-clouds", "resources/background/near-clouds.png");
+        this.load.image(
+          "far-mountains",
+          "resources/background/far-mountains.png"
+        );
+        this.load.image("mountains", "resources/background/mountains.png");
+        this.load.image("trees", "resources/background/trees.png");
+      }
+
+      function create() {
+        this.add.image(400, 300, "sky").setScale(2.5);
+
+        let x = 0;
+
+        for (let i = 0; i < 4; i++) {
+          let aux = this.add.image(x, 300, "far-clouds").setScale(2.5);
+          aux.setOrigin(0, 0.5);
+          far_clouds.push(aux);
+          x = x + 320;
+        }
+
+        x = 0;
+
+        for (let i = 0; i < 4; i++) {
+          let aux = this.add.image(x, 300, "near-clouds").setScale(2.5);
+          aux.setOrigin(0, 0.5);
+          near_clouds.push(aux);
+          x = x + 360;
+        }
+
+        x = 0;
+        for (let i = 0; i < 3; i++) {
+          let aux = this.add.image(x, 300, "far-mountains").setScale(2.5);
+          aux.setOrigin(0, 0.5);
+          far_mountains.push(aux);
+          x = x + 400;
+        }
+
+        x = 0;
+        for (let i = 0; i < 2; i++) {
+          let aux = this.add.image(x, 300, "mountains").setScale(2.5);
+          aux.setOrigin(0, 0.5);
+          mountains.push(aux);
+          x = x + 800;
+        }
+
+        x = 0;
+        for (let i = 0; i < 3; i++) {
+          let aux = this.add.image(x, 300, "trees").setScale(2.5);
+          aux.setOrigin(0, 0.5);
+          trees.push(aux);
+          x = x + 600;
+        }
+      }
+
+      function update(time, delta) {
+        far_clouds.forEach((e, idx) => {
+          let d = velocity_far_clouds * (delta / 1000);
+          e.x += d;
+          if (e.x >= 800) {
+            if (idx == 3) {
+              e.x = far_clouds[0].x - 320 + d;
+            } else {
+              e.x = far_clouds[idx + 1].x - 320 + d;
+            }
+          }
+        });
+
+        near_clouds.forEach((e, idx) => {
+          let d = velocity_near_clouds * (delta / 1000);
+          e.x += d;
+          if (e.x >= 800) {
+            if (idx == 3) {
+              e.x = near_clouds[0].x - 360 + d;
+            } else {
+              e.x = near_clouds[idx + 1].x - 360 + d;
+            }
+          }
+        });
+
+        far_mountains.forEach((e, idx) => {
+          let d = velocity_far_mountains * (delta / 1000);
+          e.x += d;
+          if (e.x >= 800) {
+            if (idx == 2) {
+              e.x = far_mountains[0].x - 400 + d;
+            } else {
+              e.x = far_mountains[idx + 1].x - 400 + d;
+            }
+          }
+        });
+
+        mountains.forEach((e, idx) => {
+          let d = velocity_mountains * (delta / 1000);
+          e.x += d;
+          if (e.x >= 800) {
+            if (idx == 1) {
+              e.x = mountains[0].x - 800 + d;
+            } else {
+              e.x = mountains[idx + 1].x - 800 + d;
+            }
+          }
+        });
+
+        trees.forEach((e, idx) => {
+          let d = velocity_trees * (delta / 1000);
+          e.x += d;
+          if (e.x >= 800) {
+            if (idx == 2) {
+              e.x = trees[0].x - 600 + d;
+            } else {
+              e.x = trees[idx + 1].x - 600 + d;
+            }
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
