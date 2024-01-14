@@ -26,26 +26,42 @@
       .bar{
         width: 180px;
         height: 40px;
-        background-color: chartreuse;
+        background-color: orange;
       }
+
+
     </style>
   </head>
   <body>
+
+
     <div class="texto">
       <p>
         Pellizca acá para ver la pantalla completa :3 <br />
-        <center style="font-size: 25px">🠛</center>
+        <center style="font-size: 25px">↓</center>
         <div class="bar" style="color:black; ">
             <center style="font-size: 25px;">→←  </center>
         </div>
       </p>
+      <p>Ahora presiona "ENTER" </p>
     </div>
     <script type="text/javascript">
+      let song;
+
+
       let far_clouds = [];
       let near_clouds = [];
       let far_mountains = [];
       let mountains = [];
       let trees = [];
+
+      let croco_t;
+      let croco_m;
+      let text;
+        
+
+      let play = false;
+      let tecla_enter;
 
       let velocity_far_clouds = 50;
       let velocity_near_clouds = 150;
@@ -67,6 +83,9 @@
       var game = new Phaser.Game(config);
 
       function preload() {
+
+        this.load.audio('song', 'resources/sounds/song.mp3');
+
         this.load.image("sky", "resources/background/sky.png");
         this.load.image("far-clouds", "resources/background/far-clouds.png");
         this.load.image("near-clouds", "resources/background/near-clouds.png");
@@ -76,10 +95,22 @@
         );
         this.load.image("mountains", "resources/background/mountains.png");
         this.load.image("trees", "resources/background/trees.png");
-      }
+      
+        // sprites
+        this.load.image('croco-t', 'resources/sprites/croco-t.png');
+        this.load.image('croco-m', 'resources/sprites/croco-m.png');
+        this.load.image('heart', 'resources/sprites/heart.png');
+    }
 
       function create() {
+
+        song = this.sound.add('song');
+
+        tecla_enter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+
         this.add.image(400, 300, "sky").setScale(2.5);
+        croco_m =  this.add.image(405, 35, "croco-m").setScale(0.1);
+        croco_m.visible = false;
 
         let x = 0;
 
@@ -90,6 +121,13 @@
           x = x + 320;
         }
 
+        text = this.add.text(400, 180, "Te amo mucho mi cielo", {
+            fontSize: '40px',
+            color: '#f5f5f5',
+
+        }).setOrigin(0.5);
+        text.visible = false;
+
         x = 0;
 
         for (let i = 0; i < 4; i++) {
@@ -99,6 +137,7 @@
           x = x + 360;
         }
 
+
         x = 0;
         for (let i = 0; i < 3; i++) {
           let aux = this.add.image(x, 300, "far-mountains").setScale(2.5);
@@ -106,6 +145,10 @@
           far_mountains.push(aux);
           x = x + 400;
         }
+
+        croco_t = this.add.image(300, 300, "croco-t").setScale(0.2);
+        croco_t.y = 120;
+        croco_t.visible = false;
 
         x = 0;
         for (let i = 0; i < 2; i++) {
@@ -123,8 +166,21 @@
           x = x + 600;
         }
 
-        this.add.text(400, 100, "Texto de Phaser").setOrigin(0.5);
-      }
+        heart = this.add.image(400, 560, 'heart').setScale(0.2);
+        heart.setInteractive();
+
+    
+
+        heart.on('pointerdown', function(pointer){
+                console.log('hola');
+                play = true;
+                croco_m.visible = true;
+                croco_t.visible = true;
+                text.visible = true;
+                song.play();
+        });
+        
+    }
 
       function update(time, delta) {
         far_clouds.forEach((e, idx) => {
@@ -163,6 +219,20 @@
           }
         });
 
+
+        let q = velocity_mountains * (delta/1000);
+
+        croco_t.x += q;
+        if(croco_t.x >= 800){
+            croco_t.x = 0 + q;
+            croco_t.flipX = false;
+            croco_m.flipX = false;
+        } else if (croco_t.x > 400){
+            croco_t.flipX = true;
+            croco_m.flipX = true;
+
+        }
+
         mountains.forEach((e, idx) => {
           let d = velocity_mountains * (delta / 1000);
           e.x += d;
@@ -186,7 +256,11 @@
             }
           }
         });
+
+      
+
       }
     </script>
+
   </body>
 </html>
